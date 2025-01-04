@@ -1,0 +1,14 @@
+.tree-node {
+  margin: 4px;
+}
+
+.tree-node-header {
+  border: 2px solid black;
+  padding: 4px;
+  font-size: 20px;
+}
+
+.tree-children {
+  padding: 3px;
+  cursor: pointer;
+}

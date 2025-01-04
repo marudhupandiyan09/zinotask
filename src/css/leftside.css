@@ -1,0 +1,18 @@
+.left-side {
+  width: 100%;
+  background-color: #f3f3f3;
+}
+
+.left-side button {
+  width: 100%;
+  padding: 10px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px), (max-width: 1024px) {
+  .left-side {
+    display: block;
+  }
+}
