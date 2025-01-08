@@ -2,42 +2,72 @@ import React, { useState } from "react";
 import "../css/treeNode.css";
 import { useDrag } from "react-dnd";
 
-const TreeNode = ({ block }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const TreeNode = ({ blocks, pushToCanvas }) => {
+  const [expended, setExpended] = useState(false);
+
 
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: "TREE_NODE",
-    item: { id: block.id, type: block.type },
+    type: "CHILD",
+    item: {
+      id: blocks.id,
+      type: blocks.type,
+      children: blocks.children || [],
+    },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   }));
 
+  if (!blocks) {
+    return null; // Safeguard for invalid or missing blocks
+  }
+
   return (
     <div
-      className="tree-node"
-      ref={drag}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
+      className="leftside"
+      style={{ width: "100%" }}
+      onClick={() => {
+        setExpended(!expended);
+      }}
     >
-      <div
-        className="tree-node-header"
-        onClick={() => setIsOpen(!isOpen)}
-        style={{ cursor: "pointer", marginTop: "20px" }}
-      >
-        {isOpen ? "⬆️" : "⬇️"} {block.type}
-      </div>
-      {isOpen && block.children && block.children.length > 0 && (
+      <div className="leftSide_block">
         <div
-          className="tree-children"
           style={{
-            marginLeft: "20px",
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {block.children.map((child) => (
-            <TreeNode key={child.id} block={child} />
-          ))}
+          {expended ? "⬆️" : "⬇️"}
+          {blocks.type}
         </div>
-      )}
+
+        <div>
+
+          {blocks.type === "block" && <button
+            onClick={(e) => {
+              pushToCanvas(e, blocks.id);
+            }}
+            style={{
+              cursor: "pointer",
+              padding: "10px",
+              width: "50px",
+              border: "none",
+              backgroundColor: "blue",
+              color: "white",
+            }}
+          >
+            💠
+          </button>}
+        </div>
+      </div>
+      <div className="left_child" ref={drag}>
+        {expended &&
+          Array.isArray(blocks.children) &&
+          blocks.children.length > 0 &&
+          blocks.children.map((data) => {
+            return <TreeNode key={data.id} blocks={data} pushToCanvas={pushToCanvas} />;
+          })}
+      </div>
     </div>
   );
 };

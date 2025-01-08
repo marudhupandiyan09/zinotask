@@ -1,14 +1,19 @@
-.tree-node {
-  margin: 4px;
+.leftside {
+  width: 100%;
+  margin-top: 10px;
 }
 
-.tree-node-header {
-  border: 2px solid black;
-  padding: 4px;
-  font-size: 20px;
+.leftSide_block {
+  display: flex;
+  margin: 10px;
+  border: 2px solid blue;
+  justify-content: space-between;
 }
 
-.tree-children {
-  padding: 3px;
-  cursor: pointer;
+.leftSide_block button {
+  margin: 3px;
+}
+
+.left_child {
+  margin-left: 20px;
 }

@@ -1,15 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import "../css/headerComp.css";
 
-//// next functionality is is the json data to be displayed on the alert box when the button is clicked
+const Header = ({ blocks, droppedItems }) => {
+  // Recursive function to find a block and its parent in the tree which is find the parent node that's all
+  const findBlockWithParent = (tree, blockId) => {
+    for (const node of tree) {
+      if (node.id === blockId) {
+        return { ...node };
+      }
 
-const Header = ({ blocks }) => {
-  // console.log("block", JSON.stringify(blocks));
-  const [showData, setShowData] = useState(false);
+      if (node.children) {
+        const childResult = findBlockWithParent(node.children, blockId);
+        if (childResult) {
+          return {
+            ...node,
+            children: [childResult], // Include only the matched child
+          };
+        }
+      }
+    }
+    return null; // Block not found in this branch
+  };
 
   const viewJson = () => {
-    setShowData(true);
-    alert(JSON.stringify(blocks));
+    const result = droppedItems.map((item) =>
+      findBlockWithParent(blocks, item.id)
+    );
+    alert(JSON.stringify(result, null, 2));
+    console.log(JSON.stringify(result, null, 2));
   };
 
   return (
